@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Simple Transactional Email</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style media="all" type="text/css">
+    /* -------------------------------------
+    GLOBAL RESETS
+------------------------------------- */
+    
+    body {
+      font-family: Helvetica, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      font-size: 16px;
+      line-height: 1.3;
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+    
+    }
+
+    
+    
+    table {
+      border-collapse: separate;
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+      width: 100%;
+    }
+    
+    table td {
+      font-family: Helvetica, sans-serif;
+      font-size: 16px;
+      vertical-align: top;
+    }
+    /* -------------------------------------
+    BODY & CONTAINER
+------------------------------------- */
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      
+    }
+    
+    .body {
+      background-color: #f4f5f6;
+      width: 100%;
+    }
+    
+    .container {
+      margin: 0 auto !important;
+      max-width: 600px;
+      padding: 0;
+      padding-top: 24px;
+      width: 600px;
+    }
+    
+    .content {
+      box-sizing: border-box;
+      display: block;
+      margin: 0 auto;
+      max-width: 600px;
+      padding: 0;
+    }
+    /* -------------------------------------
+    HEADER, FOOTER, MAIN
+------------------------------------- */
+    
+    .main {
+      background: #ffffff;
+      border: 1px solid #eaebed;
+      border-radius: 16px;
+      width: 100%;
+    }
+    
+    .wrapper {
+      box-sizing: border-box;
+      padding: 24px;
+      background-color: black;
+      color: #f4f5f6;
+    }
+    
+    .footer {
+      clear: both;
+      padding-top: 24px;
+      text-align: center;
+      width: 100%;
+    }
+    
+    .footer td,
+    .footer p,
+    .footer span,
+    .footer a {
+      color: #9a9ea6;
+      font-size: 16px;
+      text-align: center;
+    }
+    /* -------------------------------------
+    TYPOGRAPHY
+------------------------------------- */
+    
+    p {
+      font-family: Helvetica, sans-serif;
+      font-size: 16px;
+      font-weight: normal;
+      margin: 0;
+      margin-bottom: 16px;
+    }
+    
+    a {
+      color: #0867ec;
+      text-decoration: underline;
+    }
+    /* -------------------------------------
+    BUTTONS
+------------------------------------- */
+    
+    .btn {
+      box-sizing: border-box;
+      min-width: 100% !important;
+      width: 100%;
+    }
+    
+    .btn > tbody > tr > td {
+      padding-bottom: 16px;
+    }
+    
+    .btn table {
+      width: auto;
+    }
+    
+    .btn table td {
+      background-color: #ffffff;
+      border-radius: 4px;
+      text-align: center;
+    }
+    
+    .btn a {
+      background-color: #ffffff;
+      border: solid 2px #0867ec;
+      border-radius: 4px;
+      box-sizing: border-box;
+      color: #0867ec;
+      cursor: pointer;
+      display: inline-block;
+      font-size: 16px;
+      font-weight: bold;
+      margin: 0;
+      padding: 12px 24px;
+      text-decoration: none;
+      text-transform: capitalize;
+    }
+    
+    .btn-primary table td {
+      background-color: #0867ec;
+    }
+    
+    .btn-primary a {
+      background-color: #0867ec;
+      border-color: #0867ec;
+      color: #ffffff;
+    }
+    
+    @media all {
+      .btn-primary table td:hover {
+        background-color: #ec0867 !important;
+      }
+      .btn-primary a:hover {
+        background-color: #ec0867 !important;
+        border-color: #ec0867 !important;
+      }
+    }
+    
+    /* -------------------------------------
+    OTHER STYLES THAT MIGHT BE USEFUL
+------------------------------------- */
+    
+    .last {
+      margin-bottom: 0;
+    }
+    
+    .first {
+      margin-top: 0;
+    }
+    
+    .align-center {
+      text-align: center;
+    }
+    
+    .align-right {
+      text-align: right;
+    }
+    
+    .align-left {
+      text-align: left;
+    }
+    
+    .text-link {
+      color: #0867ec !important;
+      text-decoration: underline !important;
+    }
+    
+    .clear {
+      clear: both;
+    }
+    
+    .mt0 {
+      margin-top: 0;
+    }
+    
+    .mb0 {
+      margin-bottom: 0;
+    }
+    
+    .preheader {
+      color: transparent;
+      display: none;
+      height: 0;
+      max-height: 0;
+      max-width: 0;
+      opacity: 0;
+      overflow: hidden;
+      mso-hide: all;
+      visibility: hidden;
+      width: 0;
+    }
+    
+    .powered-by a {
+      text-decoration: none;
+    }
+    
+    /* -------------------------------------
+    RESPONSIVE AND MOBILE FRIENDLY STYLES
+------------------------------------- */
+    
+    @media only screen and (max-width: 640px) {
+      .main p,
+      .main td,
+      .main span {
+        font-size: 16px !important;
+      }
+      .wrapper {
+        padding: 8px !important;
+      }
+      .content {
+        padding: 0 !important;
+      }
+      .container {
+        padding: 0 !important;
+        padding-top: 8px !important;
+        width: 100% !important;
+      }
+      .main {
+        border-left-width: 0 !important;
+        border-radius: 0 !important;
+        border-right-width: 0 !important;
+      }
+      .btn table {
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+      .btn a {
+        font-size: 16px !important;
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+    }
+    /* -------------------------------------
+    PRESERVE THESE STYLES IN THE HEAD
+------------------------------------- */
+    
+    @media all {
+      .ExternalClass {
+        width: 100%;
+      }
+      .ExternalClass,
+      .ExternalClass p,
+      .ExternalClass span,
+      .ExternalClass font,
+      .ExternalClass td,
+      .ExternalClass div {
+        line-height: 100%;
+      }
+      .apple-link a {
+        color: inherit !important;
+        font-family: inherit !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+        text-decoration: none !important;
+      }
+      #MessageViewBody a {
+        color: inherit;
+        text-decoration: none;
+        font-size: inherit;
+        font-family: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+      }
+    }
+
+    .head-img {
+  max-width: 100%;
+  height: auto;
+}
+
+.hero-img{
+    max-width: 100%;
+  height: auto;
+}
+
+
+@media only screen and (min-width: 601px) {
+    h3, h4 {
+        font-size: 24px; /* Increase font size for headings on larger devices */
+    }
+}
+
+.note{
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    
+}
+
+.note h3, h4{
+    font-size: medium;
+}
+
+.desc p{
+    font-size: medium;
+    margin-left: 2rem;
+}
+
+.content-1 p{
+    font-size: medium;
+}
+
+.content-2 p{
+    font-size: medium;
+}
+
+.desc{
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    text-align: left;
+
+}
+
+.socials{
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    
+}
+
+.social a{
+    margin: 0 1rem;
+    color: aliceblue;
+    text-decoration: none;
+    
+
+}
+
+#item{
+    color: black;
+    text-decoration: none;
+    
+}
+
+.f-img{
+    max-width: 100%;
+  height: auto;
+}
+
+
+
+.footer-con{
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ margin-top: 0.5rem;
+
+}
+
+.foot p{
+    font-size: x-small;
+
+}
+
+.links{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.top-con{
+    margin: 2rem;
+}
+
+
+
+
+
+
+
+    </style>
+  </head>
+  <body class="area">
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
+      <tr>
+        <td>&nbsp;</td>
+        <td class="container">
+          <div class="content">
+
+            <!-- START CENTERED WHITE CONTAINER -->
+            <span class="preheader">This is preheader text. Some clients will show this text as a preview.</span>
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="main">
+
+              <!-- START MAIN CONTENT AREA -->
+              <tr>
+                <td class="wrapper">
+                    <img src="https://res.cloudinary.com/dgozpfjis/image/upload/v1713515396/n7bnkivtor8cz5lhqhjc.png" alt="reload "  class="head-img"/>
+
+                    <div class="top-con">
+                  <p>Hurry up! Complete your Idea Presentation (PPT) for Hacknovate 5.0 before April xx! Don't miss the chance to win substantial cash prizes, swag, and even an internship opportunity 🌟</p>
+                  <p> Feeling pumped? Channel your competitive energy and let's seize this opportunity together! Let's reignite that competitive spirit and make it happen 🚀</p>
+                </div>
+                  <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td ><img src="https://res.cloudinary.com/dgozpfjis/image/upload/v1713516008/t0jdl8gjont3xjcayqzn.png"  alt="reload "  class="hero-img"/></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="note">
+                    <h3>Round 1 Submissions due  xx April.</h3>
+                    <h4>Submission Link: <a href="https://hacknovate5.devfolio.co/">Submit Your PPT Here</a>
+
+                    </h4>
+                </div>
+
+                <div class="links">
+                    <p>
+                       
+                        <span><a href="https://hacknovate5.devfolio.co/">Registration Link</a> </span> |
+                        <span><a href="https://www.hacknovate5.tech/">Hacknovate5 Website</a></span>
+                
+                    </p>
+                
+                </div>
+
+                <div class="desc">
+                    <p>
+                        We don't want anyone to miss out on the biggest 
+                        annual hackathon brought to you by Team Hancknovate, being hosted at the Abesit Group of Institutions in Ghaziabad. ✨
+                    </p>
+                
+                    <p>
+                        If already submitted, feel free to ignore this email! 🎯
+                    </p>
+                
+                    <p>
+                        Warm Regards,
+                    </p>
+                    <p>
+                        Team Hacknovate (Organising Team)
+                    </p>
+                </div>
+                
+                <hr>
+                
+                <div class="socials">
+
+                    <a href="https://www.instagram.com/hacknovate.abesit/"><i class="fa-brands fa-square-instagram" id="item"></i></a>
+                    <a href="https://twitter.com/hacknovate"><i class="fa-brands fa-x-twitter" id="item"></i></a>
+                    <a href="https://discord.com/invite/aHSFWKjb"><i class="fa-brands fa-discord" id="item"></i></a>
+                    <a href="https://www.linkedin.com/company/hacknovate/about/"><i class="fa-brands fa-linkedin" id="item"></i></a>
+                    <a href="https://www.w3schools.com/"><i class="fa-solid fa-envelope" id="item"></i></a>
+                
+                </div>
+                
+                
+                <div class="footer-con">
+                    <p>Follow Us on our social media handles</p>
+                    <p>to stay tuned!</p>
+                </div>
+
+                
+                <div class="foot">
+
+                    <p class="end">The content of this email is confidential and intended for the recipient specified in message only. It is strictly forbidden to share any part of this message with any third party, without a written consent of the sender. If you received this message by mistake, please reply to this message and follow with its deletion, so that we can ensure such a mistake does not occur in the future.</p>
+                
+                </div>
+
+                <hr>
+
+                <img src="https://res.cloudinary.com/dgozpfjis/image/upload/v1713517057/hnehssdotomaz1sfwygs.png" alt="reload"  class="f-img"/>
+                
+                
+                
+                
+                
+                
+                </td>
+              </tr>
+
+              <!-- END MAIN CONTENT AREA -->
+              </table>
+
+            <!-- START FOOTER -->
+            <div class="footer">
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td class="content-block">
+
+                    
+                    
+                  </td>
+                </tr>
+                <tr>
+                  
+                </tr>
+              </table>
+            </div>
+
+            <!-- END FOOTER -->
+            
+<!-- END CENTERED WHITE CONTAINER --></div>
+        </td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </body>
+</html>
